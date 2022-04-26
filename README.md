@@ -17,7 +17,7 @@ To run the application, you have to:
 ------------
 
 ## Installing ZBar.
-You have to install ZBar first. It is a perfect library for scanning QR and barcodes. Much better and faster than the comparable OpenCV module.. 
+You have to install ZBar first. It is a perfect library for scanning QR and barcodes. Much better and faster than the comparable OpenCV module. 
 ```
 $ sudo apt install autopoint build-essential libv4l-dev libtool
 $ git clone -b 0.23.92 https://github.com/mchehab/zbar.git
