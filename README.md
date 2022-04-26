@@ -31,7 +31,7 @@ $ make -j4
 $ sudo make install
 $ sudo ldconfig
 ```
-Note that ZBar tries to work with /dev/video0, which the Bullseye OS doesn't support (yet). Since we're only using the decoding part of ZBar and not the ability to capture images, it won't affect our project.<br/>
+Note that ZBar tries to work with /dev/video0, which the Bullseye operating system doesn't support (yet). Since we're only using the decoding part of ZBar and not the ability to capture images, it won't affect our project.<br/>
 At **Bullseye** you can choose between [LCCV](https://github.com/Qengineering/Libcamera-OpenCV-RPi-Bullseye-64OS) or [GStreamer](https://github.com/Qengineering/Libcamera-OpenCV-RPi-Bullseye-64OS). Whatever you like best.<br/>
 The **Buster** operating system uses the relatively simple OpenCV video capture module. You could also use [GStreamer](https://github.com/Qengineering/GStreamer-1.18.4-RPi_64-bits)
 
