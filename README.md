@@ -24,6 +24,9 @@ $ git clone -b 0.23.92 https://github.com/mchehab/zbar.git
 $ cd zbar
 $ autoreconf -vfi
 $ ./configure
+```
+![output image]( https://qengineering.eu/images/QR_build.webp )
+```
 $ make -j4
 $ sudo make install
 $ sudo ldconfig
