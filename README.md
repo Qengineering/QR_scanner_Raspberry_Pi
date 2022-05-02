@@ -4,6 +4,22 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)<br/><br/>
 Special made for a bare Raspberry Pi see : [Q-engineering computer vision](https://qengineering.eu/computer-vision-with-raspberry-pi-and-alternatives.html).
 
+
+------------
+
+## Benchmark.
+| Operating system | FPS | CPU load |
+| ------------- | :-----: | :-----: | 
+| Bullseye 64-bit LCCV | 13.5 | 34% |
+| Bullseye 64-bit | 12.0 | 46% |
+| Bullseye 32-bit | 10.0 | 40% |
+| Buster 64-bit | 8.7 | 34% |
+| Buster 32-bit | 8.0 | 32% |
+
+All versions work with GStreamer due to its very low latency.<br/>
+There is also a Bullseye 64-bit version that works with our [LCCV](https://github.com/Qengineering/LCCV).<br/>
+It outperforms GStreamer in terms of FPS and CPU load.
+
 ------------
 
 ## Dependencies.
@@ -11,7 +27,6 @@ To run the application, you have to:
 - A raspberry Pi 4 with a 32 or 64-bit operating system. It may have a Buster (Debian 10) or Bullseye (Debian 11) operating system. <br/>
 - ZBar installed.
 - OpenCV installed. [Install OpenCV 4.5](https://qengineering.eu/install-opencv-4.5-on-raspberry-64-os.html) <br/>
-- Code::Blocks installed. (```$ sudo apt-get install codeblocks```)
 - A working Raspicam.
 
 ------------
@@ -31,22 +46,59 @@ $ make -j4
 $ sudo make install
 $ sudo ldconfig
 ```
-Note that ZBar tries to work with /dev/video0, which the Bullseye operating system doesn't support (yet). Since we're only using the decoding part of ZBar and not the ability to capture images, it won't affect our project.<br/>
-At **Bullseye** you can choose between [LCCV](https://github.com/Qengineering/Libcamera-OpenCV-RPi-Bullseye-64OS) or [GStreamer](https://github.com/Qengineering/Libcamera-OpenCV-RPi-Bullseye-64OS). Whatever you like best.<br/>
-The **Buster** operating system uses the relatively simple OpenCV video capture module. You could also use [GStreamer](https://github.com/Qengineering/GStreamer-1.18.4-RPi_64-bits)
+Note that ZBar tries to work with /dev/video0, which the Bullseye operating system doesn't support (yet).<br/>
+Since we're only using the decoding part of ZBar and not the ability to capture images, it won't affect our project.<br/>
 
 ### Scanning QR and/or barcodes
 In the code you can configure the codes ZBar is trying to decode.
-At the beginning of main.cpp you see two lines.
+You can enable all possible codes by the single line
+```
+scanner.set_config(zbar::ZBAR_NONE, zbar::ZBAR_CFG_ENABLE, 1);
+```
+Or, if you want to scan a specific code, uncheck everything and then enable the one you want 
 ```
 scanner.set_config(zbar::ZBAR_NONE, zbar::ZBAR_CFG_ENABLE, 0);
 scanner.set_config(zbar::ZBAR_QRCODE, zbar::ZBAR_CFG_ENABLE, 1);
 ```
-The first line `(zbar::ZBAR_NONE, zbar::ZBAR_CFG_ENABLE, 0)` disable all types of code.<br/>
-The second line `(zbar::ZBAR_QRCODE, zbar::ZBAR_CFG_ENABLE, 1)` enables only QR codes.<br/>
-By removing the first line, all known Barcode types will detected also. More info at [ZBar](http://zbar.sourceforge.net/api/zbar_8h.html#f7818ad6458f9f40362eecda97acdcb0).
+More info at [ZBar](http://zbar.sourceforge.net/api/zbar_8h.html#f7818ad6458f9f40362eecda97acdcb0).
 
 ------------
 
 ## Installing the app.
+
+- Make sure you have OpenCV up and running on your system.<br/>
+- Choose the folder with your operating system (Buster or BUllseye, 32 or 64 bit).<br/>
+- Download the files.<br/>
+- You can either build the app with Code::Blocks (`$ sudo apt-get install codeblocks`) or use CMake.<br/>
+### Code::Blocks
+Load the project file `QR.cbp` and run the app with F9.<br/>
+For more info on how to work with the Code::Blocks IDE see our [tutorial](https://qengineering.eu/opencv-c-examples-on-raspberry-pi.html).<br/>
+### CMake
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+![output image]( https://qengineering.eu/images/QRpi_CMake.png )<br/>
+After the build you find the QRpi app in the buiild folder.<br/>
+.<br/>
+├── build<br/>
+│   ├── CMakeCache.txt<br/>
+│   ├── CMakeFiles<br/>
+│   ├── cmake_install.cmake<br/>
+│   ├── Makefile<br/>
+│   └── **_QRpi_**<br/>
+├── CMakeLists.txt<br/>
+├── main.cpp<br/>
+└── QRpi.cbp<br/><br/>
+
+------------
+
+## Final remarks.
+
+- Keep the camera resolution at 1024x768 as we will crop the images to the required ZBar size of 720x720.
+- The standard Raspicam is not the best choice when it comes to scanning small QR codes. With its fixed focus, the camera cannot zoom in very close. If you need to scan tiny QR codes, consider a variable focus camera like [ArduCam's 8Mp](https://www.uctronics.com/arducam-8-mp-sony-imx219-camera-module-with-m12-lens-ls40136-for-raspberry-pi.html). ![output image]( https://qengineering.eu/images/Arducam_M12.png )<br/><br/>
+
+![output image]( https://qengineering.eu/images/QRsucces.png )
 
